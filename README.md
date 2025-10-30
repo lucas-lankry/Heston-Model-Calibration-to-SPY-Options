@@ -2,7 +2,6 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)]()
 
 ## Project Overview
 
@@ -155,14 +154,17 @@ Coverage:
 
 #### 1. Option Price Surface
 <img width="527" height="469" alt="image" src="https://github.com/user-attachments/assets/48205afb-d6bf-4556-952e-7b5854074ac7" />
+
 *Market prices (blue surface) vs Heston model predictions (red points)*
 
 #### 2. Implied Volatility Surface
 <img width="511" height="433" alt="image" src="https://github.com/user-attachments/assets/85cd021d-e797-44ce-bc84-0f49f659cf20" />
+
 *Comparison of market and model-implied volatilities*
 
 #### 3. Volatility Smile Evolution
 <img width="1352" height="654" alt="image" src="https://github.com/user-attachments/assets/603a245b-795b-4920-96c6-1fc768a76a63" />
+
 *Model captures volatility smile across different maturities*
 
 ---
