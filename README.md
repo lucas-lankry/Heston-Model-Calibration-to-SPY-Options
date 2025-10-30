@@ -47,12 +47,7 @@ heston-model-calibration/
 ├── heston_calibration.py              # Main implementation
 │
 ├── results/
-│   ├── option_prices_surface.html     # 3D visualization
-│   ├── implied_volatility_surface.html
-│   └── volatility_smiles.html
-│
-├── docs/
-│   └── methodology.md                 # Technical documentation
+│   ├── Heston_Calibration_Demo.ipynb     # Notebook Jupyter
 │
 └── tests/
     └── test_heston.py                 # Unit tests
