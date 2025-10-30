@@ -284,22 +284,6 @@ print(f"Call price: ${call_price:.2f}")
 
 ---
 
-### Development Setup
-
-```bash
-# Install development dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest tests/ -v
-
-# Check code quality
-flake8 heston_calibration.py
-black heston_calibration.py --check
-```
-
----
-
 ##  Contact
 
 **Your Name**
