@@ -177,60 +177,61 @@ def heston_price_rec(S0, K, v0, kappa, theta, sigma, rho, lambd, tau, r):
 
     return np.real((S0 - K*np.exp(-r*tau)) / 2 + P / np.pi)
 
+# In the model, we don't use this method to gain time, however you can still use it check the accuracy of your results
 
-def heston_price_quad(S0, K, v0, kappa, theta, sigma, rho, lambd, tau, r):
-    """
-    Price a European call option using Heston model with adaptive integration.
+# def heston_price_quad(S0, K, v0, kappa, theta, sigma, rho, lambd, tau, r):
+#     """
+#     Price a European call option using Heston model with adaptive integration.
     
-    This function uses scipy's adaptive quadrature for higher accuracy but
-    is slower than rectangular integration. Best used for final pricing
-    or verification, not for calibration loops.
+#     This function uses scipy's adaptive quadrature for higher accuracy but
+#     is slower than rectangular integration. Best used for final pricing
+#     or verification, not for calibration loops.
     
-    Parameters
-    ----------
-    S0 : float
-        Current underlying asset price
-    K : float
-        Strike price (must be scalar for quad integration)
-    v0 : float
-        Initial variance
-    kappa : float
-        Speed of mean reversion
-    theta : float
-        Long-term variance
-    sigma : float
-        Volatility of volatility
-    rho : float
-        Correlation between returns and variance
-    lambd : float
-        Market price of volatility risk
-    tau : float
-        Time to maturity in years
-    r : float
-        Risk-free rate
+#     Parameters
+#     ----------
+#     S0 : float
+#         Current underlying asset price
+#     K : float
+#         Strike price (must be scalar for quad integration)
+#     v0 : float
+#         Initial variance
+#     kappa : float
+#         Speed of mean reversion
+#     theta : float
+#         Long-term variance
+#     sigma : float
+#         Volatility of volatility
+#     rho : float
+#         Correlation between returns and variance
+#     lambd : float
+#         Market price of volatility risk
+#     tau : float
+#         Time to maturity in years
+#     r : float
+#         Risk-free rate
     
-    Returns
-    -------
-    float
-        European call option price
+#     Returns
+#     -------
+#     float
+#         European call option price
         
-    Notes
-    -----
-    Uses scipy.integrate.quad with adaptive step size.
-    More accurate than rectangular integration but ~10-50x slower.
-    Cannot handle array inputs - use only for scalar pricing.
-    """
-    def integrand_local(phi):
-        """Local integrand function for this specific option."""
-        args = (S0, v0, kappa, theta, sigma, rho, lambd, tau, r)
-        numerator = (np.exp(r*tau) * heston_charfunc(phi-1j, *args) - 
-                     K * heston_charfunc(phi, *args))
-        denominator = 1j * phi * K**(1j * phi)
-        return numerator / denominator
+#     Notes
+#     -----
+#     Uses scipy.integrate.quad with adaptive step size.
+#     More accurate than rectangular integration but ~10-50x slower.
+#     Cannot handle array inputs - use only for scalar pricing.
+#     """
+#     def integrand_local(phi):
+#         """Local integrand function for this specific option."""
+#         args = (S0, v0, kappa, theta, sigma, rho, lambd, tau, r)
+#         numerator = (np.exp(r*tau) * heston_charfunc(phi-1j, *args) - 
+#                      K * heston_charfunc(phi, *args))
+#         denominator = 1j * phi * K**(1j * phi)
+#         return numerator / denominator
 
-    real_integral, err = quad(lambda phi: np.real(integrand_local(phi)), 0, 100)
+#     real_integral, err = quad(lambda phi: np.real(integrand_local(phi)), 0, 100)
 
-    return (S0 - K*np.exp(-r*tau)) / 2 + real_integral / np.pi
+#     return (S0 - K*np.exp(-r*tau)) / 2 + real_integral / np.pi
 
 
 def validate_heston_parameters(v0, kappa, theta, sigma, rho, lambd):
@@ -882,4 +883,5 @@ print("✓ All visualizations complete\n")
 
 print("\n" + "="*80)
 print("CALIBRATION COMPLETE")
+
 print("="*80)
