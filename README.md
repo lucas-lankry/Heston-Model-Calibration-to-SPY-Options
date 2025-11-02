@@ -61,8 +61,7 @@ heston-model-calibration/
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/heston-model-calibration.git
-cd heston-model-calibration
+git clone https://github.com/yourusername/Heston-Model-Calibration-to-SPY-Options.git
 
 # Install dependencies
 pip install -r requirements.txt
