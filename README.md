@@ -21,7 +21,8 @@ This project implements and calibrates the **Heston (1993) stochastic volatility
 
 ---
 
-##  Key Results (*Last updated: November 2025 | SPY Price: $682.06 | Options analyzed: 600*)
+##  Key Results 
+(*Last updated: November 2025 | SPY Price: $682.06 | Options analyzed: 600*)
 
 ### Model Comparison Summary
 
