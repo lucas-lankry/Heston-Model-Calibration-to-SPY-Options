@@ -9,11 +9,13 @@ This project implements the **Heston (1993) stochastic volatility model** from s
 
 ### Key Results
 
-- **R² = 0.969** 
-- **RMSE = $6.25 (6.3%)** 
-- **89.4%** of options priced within $5 of market
-- **510 options** across 17 maturities calibrated
+- **R² = 0.9759** 
+- **RMSE = $5.5182 (5.83% of mean price $94.71)**
+- **MAE =$3.3385 (4.04%)**
+- **92.7%** of options priced within $5 of market
+- **600 options** across 20 maturities calibrated
 
+#### (Date: 11/2/2025)
 ---
 
 ## Features
@@ -85,7 +87,7 @@ nelson-siegel-svensson>=0.4.0
 python heston_calibration.py
 ```
 
-**Expected runtime:** 2-5 minutes (depending on market data availability)
+**Expected runtime:** 5-10 minutes
 
 ---
 
@@ -106,12 +108,15 @@ where: dW₁(t)dW₂(t) = ρdt
 
 | Parameter | Description | Calibrated Value |
 |-----------|-------------|------------------|
-| **v₀** | Initial variance | 0.0502 (22.4% vol) |
-| **κ** | Mean reversion speed | 2.80 year⁻¹ |
-| **θ** | Long-term variance | 0.0505 (22.5% vol) |
-| **σ** | Volatility of volatility | 0.586 |
-| **ρ** | Correlation | -0.630 |
-| **λ** | Market price of vol risk | 0.109 |
+| **v₀** | Initial variance | 0.052974 (22.4% vol) |
+| **κ** | Mean reversion speed | 2.748720 year⁻¹ |
+| **θ** | Long-term variance | 0.042167 (22.5% vol) |
+| **σ** | Volatility of volatility | 0.487266 |
+| **ρ** | Correlation | -1.000000 |
+| **λ** | Market price of vol risk | 0.223897 |
+
+Implied initial volatility: 23.02%
+Implied long-term volatility: 20.53%
 
 ### Key Insights
 
