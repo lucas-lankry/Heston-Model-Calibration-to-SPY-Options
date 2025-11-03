@@ -2,58 +2,160 @@
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/lucas-lankry/Heston-Model-Calibration-to-SPY-Options?style=social)](https://github.com/lucas-lankry/Heston-Model-Calibration-to-SPY-Options/stargazers)
+[![Forks](https://img.shields.io/github/forks/lucas-lankry/Heston-Model-Calibration-to-SPY-Options?style=social)](https://github.com/lucas-lankry/Heston-Model-Calibration-to-SPY-Options/network/members)
 
-## Project Overview
+##  Project Overview
 
-This project implements the **Heston (1993) stochastic volatility model** from scratch, calibrating it to live S&P 500 ETF (SPY) options data. Unlike the Black-Scholes model which assumes constant volatility, Heston captures the dynamics of volatility smiles and term structures observed in real markets.
+This project implements and calibrates the **Heston (1993) stochastic volatility model** to price SPY call options, demonstrating superior performance over the traditional Black-Scholes-Merton model in capturing market volatility dynamics.
 
-### Key Results
+### Key Features
 
-- **R² = 0.9759** 
-- **RMSE = $5.5182 (5.83% of mean price $94.71)**
-- **MAE =$3.3385 (4.04%)**
-- **92.7%** of options priced within $5 of market
-- **600 options** across 20 maturities calibrated
-
-#### (Date: 11/2/2025)
----
-
-## Features
-
-### Core Implementation
--  **Characteristic function** with numerical stability safeguards
--  **Dual pricing methods**: Fast rectangular integration & adaptive quadrature
--  **Parameter validation** including Feller condition checks
--  **Risk-free curve calibration** using Nelson-Siegel-Svensson methodology
--  **Implied volatility surface** extraction and comparison
-
-### Visualizations
--  3D option price surface comparison (Market vs Model)
--  Implied volatility surface with RMSE metrics
--  Volatility smile across multiple maturities
-
-### Data Pipeline
--  Automated data collection via `yfinance`
--  Filtering (moneyness, maturity, bid-ask spreads)
--  Treasury yield curve integration for risk-free rates
+-  **Real-time market data** collection via yfinance API
+   **Heston model** implementation with rectangular integration
+-  **Black-Scholes-Merton** baseline comparison
+-  **Nelson-Siegel-Svensson** yield curve calibration for risk-free rates
+-  **3D interactive visualizations** using Plotly
+-  **Implied volatility** surface analysis
+-  **Comprehensive performance metrics** and validation
 
 ---
 
-##  Project Structure
+##  Key Results (*Last updated: November 2025 | SPY Price: $682.06 | Options analyzed: 600*)
 
+### Model Comparison Summary
+
+| Metric | Heston | BSM | Heston Improvement |
+|--------|--------|-----|-------------------|
+| **RMSE** | $5.52 | $7.07 | **21.9% better**  |
+| **MAE** | $3.34 | $5.53 | **39.7% better**  |
+| **MAPE** | 4.03% | 7.25% | **44.4% better**  |
+| **R²** | 0.9759 | 0.9605 | **1.6% better**  |
+| **Parameters** | 6 | 1 | More flexible |
+
+### Performance Breakdown
+
+#### By Moneyness
+- **Deep OTM**: Heston wins by 31.7%
+- **OTM**: Heston wins by 52.4%
+- **ATM**: Heston wins by 70.7%
+- **ITM**: Heston wins by 87.6%
+- **Deep ITM**: Heston wins by 95.2%
+
+#### By Maturity
+- **Short-term (<3m)**: Heston wins by 21.9%
+- **Medium-term (3-6m)**: Heston wins by 30.3%
+- **Long-term (6m-1y)**: Heston wins by 35.9%
+- **Very long-term (>1y)**: Heston wins by 83.0%
+
+### Calibrated Heston Parameters
 ```
-heston-model-calibration/
-│
-├── README.md                          # This file
-├── requirements.txt                   # Python dependencies
-├── heston_calibration.py              # Main implementation
-│
-├── results/
-│   ├── Heston_Calibration_Demo.ipynb     # Notebook Jupyter
-│
-└── tests/
-    └── test_heston.py                 # Unit tests
+SPY Price: $682.06
+
+v0 (Initial variance):           0.0529 (σ₀ = 23.01%)
+κ (Mean reversion speed):        2.7557
+θ (Long-term variance):          0.0421 (σ_∞ = 20.51%)
+σ (Volatility of volatility):   0.4871
+ρ (Correlation):                -1.0000 
+λ (Market price of vol risk):   0.2153
 ```
+
+**Note**: Feller condition (2κθ > σ²) slightly violated (0.2318 vs 0.2373), indicating potential for variance to reach zero in extreme scenarios.
+
+---
+
+##  Visual Results
+
+### Option Prices: 3D Surface Comparison
+
+<img width="860" height="505" alt="image" src="https://github.com/user-attachments/assets/98228dc3-1f3d-490e-81b0-21ed524d02db" />
+
+
+**Key Observation**: The blue mesh represents market prices. Red dots (Heston) closely follow the market surface, while green diamonds (BSM) show systematic deviations, especially for ITM options and longer maturities.
+
+---
+
+### Pricing Errors: Spatial Distribution
+
+<img width="791" height="347" alt="image" src="https://github.com/user-attachments/assets/627ffd40-8bad-4c32-bfd7-ed61f0bd6cb4" />
+
+
+**Key Observation**: 
+- **Heston** (left): Errors concentrated near zero (yellow/orange), with minimal extreme values
+- **BSM** (right): Larger systematic errors (more red regions), particularly for longer maturities
+
+---
+
+### Error Distributions: Statistical Comparison
+
+<img width="843" height="335" alt="image" src="https://github.com/user-attachments/assets/e85d5742-8722-4b08-8f46-4c53ead1c848" />
+
+
+**Key Observation**:
+- **Heston** (red): Tight distribution centered near zero (σ = $5.50)
+- **BSM** (green): Wider spread with systematic bias (σ = $6.93)
+- Heston's tighter distribution demonstrates superior calibration accuracy
+
+---
+
+### Volatility Smile: The Critical Difference
+
+<img width="884" height="555" alt="image" src="https://github.com/user-attachments/assets/70c880bc-8193-48dc-afc6-46331f80ff6f" />
+
+
+** This is where Heston shines!**
+
+Across all maturities (0.05y to 1.37y):
+- **Market** (blue dots): Clear downward-sloping smile pattern
+- **Heston** (red line): Accurately captures the smile curvature
+- **BSM** (green dashed): Flat line - **cannot model the smile by design**
+
+The smile effect becomes more pronounced for:
+- Shorter maturities (60% IV for deep OTM at 0.05y)
+- Longer maturities (smoother but persistent 16-28% range at 1.37y)
+
+---
+
+###  Want Interactive Plots?
+
+The static images above are screenshots. To explore **fully interactive 3D visualizations** where you can:
+-  Rotate plots in real-time
+-  Zoom into specific regions  
+-  Hover for exact values
+-  Export custom views
+
+Simply run:
+```bash
+python Heston_Comparison_to_BSM.py
+```
+
+The interactive Plotly charts will open automatically in your browser!
+
+---
+
+##  Why These Visuals Matter
+
+### 1. **3D Surface Plot** → Model Fit Quality
+The mesh visualization shows how well models approximate the true market surface. Heston's tight clustering around the market mesh demonstrates superior fit across the entire strike-maturity space.
+
+### 2. **Error Plots** → Systematic Bias Detection  
+The spatial error distribution reveals:
+- **Heston**: Random, unbiased errors (good calibration)
+- **BSM**: Systematic patterns indicating model misspecification
+
+### 3. **Histograms** → Statistical Validity
+The error distributions prove Heston's superiority statistically:
+- 20% tighter standard deviation
+- More symmetric distribution (less bias)
+- Fewer extreme outliers
+
+### 4. **Volatility Smile** → Economic Realism 
+This is the "smoking gun":
+- Real markets exhibit volatility smiles due to crash fears, skewness, and kurtosis
+- BSM's flat line violates this empirical reality
+- Heston's curved fit reflects true market dynamics
+
+**Bottom Line**: BSM systematically misprices options because it cannot capture volatility smile dynamics that are fundamental to options markets.
 
 ---
 
@@ -61,219 +163,137 @@ heston-model-calibration/
 
 ### Installation
 
+1. Clone the repository:
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/Heston-Model-Calibration-to-SPY-Options.git
+git clone https://github.com/lucas-lankry/Heston-Model-Calibration-to-SPY-Options.git
+cd Heston-Model-Calibration-to-SPY-Options
+```
 
-# Install dependencies
+2. Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
-### Dependencies
-
-```txt
-numpy>=1.21.0
-pandas>=1.3.0
-scipy>=1.7.0
-matplotlib>=3.4.0
-plotly>=5.0.0
-yfinance>=0.1.70
-nelson-siegel-svensson>=0.4.0
-```
-
-### Run Calibration
-
+3. Run the comparison:
 ```bash
-python heston_calibration.py
+python Heston_Comparison_to_BSM.py
 ```
 
-**Expected runtime:** 5-10 minutes
+**Expected runtime**: ~5-10 minutes
 
 ---
 
-##  The Heston Model
+##  Model Architecture
 
-### Model Dynamics
+### Heston Model
 
-The Heston model describes the evolution of an asset price S(t) and its variance v(t):
-
+The Heston model assumes stochastic volatility following:
 ```
-dS(t) = μS(t)dt + √v(t)S(t)dW₁(t)
-dv(t) = κ(θ - v(t))dt + σ√v(t)dW₂(t)
-
-where: dW₁(t)dW₂(t) = ρdt
+dS_t = μS_t dt + √v_t S_t dW_t^S
+dv_t = κ(θ - v_t)dt + σ√v_t dW_t^v
+dW_t^S dW_t^v = ρdt
 ```
 
-### Parameters
+**Advantages over BSM**:
+1.  Captures **volatility smile** (varying IV across strikes)
+2.  Models **term structure** of volatility
+3.  Accounts for **leverage effect** (ρ < 0)
+4.  Handles **volatility clustering**
 
-| Parameter | Description | Calibrated Value |
-|-----------|-------------|------------------|
-| **v₀** | Initial variance | 0.052974 (22.4% vol) |
-| **κ** | Mean reversion speed | 2.748720 year⁻¹ |
-| **θ** | Long-term variance | 0.042167 (22.5% vol) |
-| **σ** | Volatility of volatility | 0.487266 |
-| **ρ** | Correlation | -1.000000 |
-| **λ** | Market price of vol risk | 0.223897 |
+### Implementation Details
 
-Implied initial volatility: 23.02%
-Implied long-term volatility: 20.53%
-
-### Key Insights
-
-1. **Negative correlation (ρ = -0.63)**: Captures the leverage effect - falling prices increase volatility
-2. **Fast mean reversion (κ = 2.80)**: Volatility returns to long-term level in ~3 months
-3. **Positive risk premium (λ = 0.11)**: Market pays premium for volatility protection
+- **Pricing method**: Rectangular integration (midpoint rule, N=10,000)
+- **Optimization**: SLSQP (Sequential Least Squares Programming)
+- **Data scope**: 600 options across 20 maturities (0.05-1.37 years)
+- **Strike range**: 80%-120% of spot price ($546-$780)
 
 ---
 
-##  Results & Performance
+##  Visualizations
 
-### Calibration Metrics
+The code generates **4 interactive 3D Plotly visualizations** that can be rotated and zoomed:
 
-```
-Pricing Accuracy:
-├─ RMSE:          $6.25
-├─ MAE:           $3.87
-├─ MAPE:          4.53%
-├─ R²:            0.9685
-└─ Relative RMSE: 6.30%
+| Visualization | Purpose | Key Insight |
+|---------------|---------|-------------|
+| **Option Prices Surface** | Model fit comparison | Heston tracks market surface; BSM deviates systematically |
+| **Pricing Errors (3D)** | Error spatial distribution | Heston errors random; BSM errors show patterns |
+| **Error Histograms** | Statistical validation | Heston: σ=$5.50; BSM: σ=$6.93 (20% tighter) |
+| **Volatility Smile** | Economic realism test | Heston captures smile; BSM produces flat line |
 
-Implied Volatility:
-├─ RMSE:          7.78%
-├─ MAE:           5.11%
-└─ Max Error:     31.82%
+###  Critical Finding: The Volatility Smile
 
-Coverage:
-├─ Within $1:     14.5%
-├─ Within $2:     26.9%
-└─ Within $5:     89.4%
-```
+The volatility smile visualization is **the most important chart** because it demonstrates:
 
-### Visual Results
+1. **Market Reality**: Options traders price OTM puts higher (implied vol ~60% at 0.05y maturity) due to crash risk
+2. **Heston Success**: Red line follows the blue market dots, capturing the smile curvature
+3. **BSM Failure**: Green dashed line is flat (~23% constant) - physically incorrect
 
-#### 1. Option Price Surface
-<img width="527" height="469" alt="image" src="https://github.com/user-attachments/assets/48205afb-d6bf-4556-952e-7b5854074ac7" />
+This explains why Heston achieves:
+- **95.2% better pricing** for deep ITM options
+- **83.0% better pricing** for long-term options
+- **Overall 39.7% lower MAE**
 
-*Market prices (blue surface) vs Heston model predictions (red points)*
-
-#### 2. Implied Volatility Surface
-<img width="511" height="433" alt="image" src="https://github.com/user-attachments/assets/85cd021d-e797-44ce-bc84-0f49f659cf20" />
-
-*Comparison of market and model-implied volatilities*
-
-#### 3. Volatility Smile Evolution
-<img width="1352" height="654" alt="image" src="https://github.com/user-attachments/assets/603a245b-795b-4920-96c6-1fc768a76a63" />
-
-*Model captures volatility smile across different maturities*
+>  **Intuition**: The smile exists because market participants know volatility isn't constant (BSM assumption). Heston models volatility as stochastic, matching reality.
 
 ---
 
-##  Technical Details
+##  Technical Highlights
 
-### Numerical Methods
+### Numerical Stability
+- Exponential argument clipping to prevent overflow
+- Near-zero denominator handling
+- Non-finite value replacement
 
-**Characteristic Function Integration:**
-```python
-# Fast pricing using rectangular rule
-# Accurate pricing using adaptive quadrature
+### Parameter Validation
+- Feller condition checking
+- Economic reasonableness tests
+- Boundary constraint enforcement
+
+### Risk-Free Rate Calibration
+Nelson-Siegel-Svensson yield curve fitted to US Treasury rates:
 ```
-
-**Optimization:**
-- Method: SLSQP (Sequential Least Squares Programming)
-- Objective: Mean Squared Error (MSE)
-- Constraints: Parameter bounds + physical feasibility
-- Convergence: 79 iterations, MSE = 39.0
-
-### Stability Features
-
-1. **Exponential clipping** to prevent overflow
-2. **Division-by-zero protection** in denominators
-3. **Non-finite value handling** with fallback to zero
-4. **Feller condition validation** for parameter stability
-
----
-
-##  Known Limitations
-
-### Feller Condition Status
-```
-2κθ = 0.283 < σ² = 0.343   VIOLATED
-```
-
-**Impact:** Theoretical possibility of variance reaching zero.
-
-**Mitigation:**
-- Violation is modest (ratio = 82.5%)
-- Initial variance close to long-term level reduces risk
-- Numerical safeguards prevent computational issues
-- Suitable for short-to-medium term pricing (< 2 years)
-
-### Model Limitations
-
-1. **Short-term smile underestimation**: Heston struggles with steep short-dated skews
-2. **Deep OTM options**: Higher errors for extreme strikes (< 80% or > 120% moneyness)
-3. **Jump component missing**: No discontinuous price movements 
-
----
-
-##  Advanced Usage
-
-### Custom Calibration
-
-```python
-from heston_calibration import heston_price_rec, SqErr
-from scipy.optimize import minimize
-
-# Define custom parameter bounds
-custom_bounds = [
-    (0.01, 0.15),   # v0
-    (0.5, 10.0),    # kappa
-    (0.01, 0.15),   # theta
-    (0.1, 2.0),     # sigma
-    (-0.99, -0.3),  # rho (force negative)
-    (0.0, 0.5)      # lambda
-]
-
-# Run optimization with custom settings
-result = minimize(
-    SqErr, 
-    x0=[0.05, 3.0, 0.05, 0.3, -0.7, 0.1],
-    method='SLSQP',
-    bounds=custom_bounds,
-    options={'maxiter': 10000, 'ftol': 1e-6}
-)
-```
-
-### Price Individual Options
-
-```python
-# Price a single ATM call option
-S0 = 683.44      # Current SPY price
-K = 685.0        # Strike
-tau = 0.25       # 3 months to expiry
-r = 0.0452       # Risk-free rate
-
-call_price = heston_price_quad(
-    S0, K, 
-    v0=0.0502, kappa=2.80, theta=0.0505,
-    sigma=0.586, rho=-0.63, lambd=0.109,
-    tau=tau, r=r
-)
-
-print(f"Call price: ${call_price:.2f}")
+Maturities: 1m, 2m, 3m, 6m, 1y, 2y, 3y, 5y, 7y, 10y, 20y, 30y
 ```
 
 ---
 
-##  References
+##  Project Structure
+```
+├── Heston_Comparison_to_BSM.py          #  Performance Comparison to BSM
+├── heston_calibration.py     # Main implementation
+├── Heston_Calibration_Demo.ipynb   # Notebook Jupyter
+├── README.md                  # This file
+└── requirements.txt           # Python dependencies
+```
 
-### Academic Papers
+---
 
-1. **Heston, S. L.** (1993). "A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options." *Review of Financial Studies*, 6(2), 327-343.
+##  Why Heston Outperforms BSM
 
-2. **Gatheral, J.** (2006). *The Volatility Surface: A Practitioner's Guide*. Wiley Finance.
+### Theoretical Advantages
+1. **Stochastic Volatility**: Captures real-world volatility dynamics
+2. **Leverage Effect**: Negative correlation (ρ = -1) models stock-volatility relationship
+3. **Fat Tails**: Better fits extreme moves than log-normal distribution
+4. **Smile Dynamics**: Term structure of volatility smile
 
-3. **Rouah, F. D.** (2013). *The Heston Model and its Extensions in Matlab and C#*. Wiley.
+### Empirical Evidence (This Project)
+- **39.7% lower MAE** across all options
+- **Consistently superior** across all moneyness levels
+- **Especially strong** for ITM/Deep ITM options (87.6-95.2% improvement)
+- **Excellent long-term** performance (83% improvement for >1y maturity)
+
+---
+
+##  Limitations & Considerations
+
+1. **Feller Condition**: Current calibration slightly violates Feller condition 
+2. **Computational Cost**: Heston ~50x slower than BSM (but still < 1 second per option)
+3. **Calibration Stability**: 6 parameters require more data than BSM's 1 parameter
+4. **Perfect Correlation**: ρ = -1.0 at boundary may indicate over-fitting
+
+---
+
+##  References & Resources
 
 ### Technical Resources
 
@@ -281,14 +301,23 @@ print(f"Call price: ${call_price:.2f}")
 - [QuantLib Documentation](https://www.quantlib.org/)
 - [Options Pricing Theory - Hull](http://www-2.rotman.utoronto.ca/~hull/)
 
+##  Academic Papers
+
+1. **Heston, S. L.** (1993). "A Closed-Form Solution for Options with Stochastic Volatility with Applications to Bond and Currency Options." *Review of Financial Studies*, 6(2), 327-343.
+
+2. **Black, F., & Scholes, M.** (1973). "The Pricing of Options and Corporate Liabilities." *Journal of Political Economy*, 81(3), 637-654.
+
+3. **Nelson, C. R., & Siegel, A. F.** (1987). "Parsimonious Modeling of Yield Curves." *Journal of Business*, 60(4), 473-489.
+
 ---
 
 ##  Contact
 
-**Your Name**
+**Author**
 -  Email: llankry@ncsu.edu
 -  LinkedIn: http://linkedin.com/in/lucaslankry/
-
+- GitHub: [@lucas-lankry](https://github.com/lucas-lankry)
+  
 ---
 
 ##  Acknowledgments
@@ -296,3 +325,5 @@ print(f"Call price: ${call_price:.2f}")
 - Market data provided by **Yahoo Finance** via `yfinance`
 - Treasury yields from **U.S. Department of the Treasury**
 - Inspired by implementations from **QuantLib** and **QuantPy**
+
+*Last updated: November 2025 | SPY Price: $682.06 | Options analyzed: 600*
