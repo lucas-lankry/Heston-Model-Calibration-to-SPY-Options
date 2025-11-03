@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/lucas-lankry/Heston-Model-Calibration-to-SPY-Options?style=social)](https://github.com/lucas-lankry/Heston-Model-Calibration-to-SPY-Options/stargazers)
-[![Forks](https://img.shields.io/github/forks/lucas-lankry/Heston-Model-Calibration-to-SPY-Options?style=social)](https://github.com/lucas-lankry/Heston-Model-Calibration-to-SPY-Options/network/members)
+
 
 ##  Project Overview
 
@@ -150,7 +150,7 @@ The error distributions prove Heston's superiority statistically:
 - Fewer extreme outliers
 
 ### 4. **Volatility Smile** → Economic Realism 
-This is the "smoking gun":
+
 - Real markets exhibit volatility smiles due to crash fears, skewness, and kurtosis
 - BSM's flat line violates this empirical reality
 - Heston's curved fit reflects true market dynamics
@@ -259,11 +259,11 @@ Maturities: 1m, 2m, 3m, 6m, 1y, 2y, 3y, 5y, 7y, 10y, 20y, 30y
 
 ##  Project Structure
 ```
-├── Heston_Comparison_to_BSM.py          #  Performance Comparison to BSM
-├── heston_calibration.py     # Main implementation
+├── Heston_Comparison_to_BSM.py     #  Performance Comparison to BSM
+├── heston_calibration.py           # Main implementation
 ├── Heston_Calibration_Demo.ipynb   # Notebook Jupyter
-├── README.md                  # This file
-└── requirements.txt           # Python dependencies
+├── README.md                       # This file
+└── requirements.txt                # Python dependencies
 ```
 
 ---
