@@ -104,7 +104,6 @@ v0 (Initial variance):           0.0529 (σ₀ = 23.01%)
 <img width="884" height="555" alt="image" src="https://github.com/user-attachments/assets/70c880bc-8193-48dc-afc6-46331f80ff6f" />
 
 
-** This is where Heston shines!**
 
 Across all maturities (0.05y to 1.37y):
 - **Market** (blue dots): Clear downward-sloping smile pattern
@@ -221,7 +220,7 @@ The code generates **4 interactive 3D Plotly visualizations** that can be rotate
 | **Error Histograms** | Statistical validation | Heston: σ=$5.50; BSM: σ=$6.93 (20% tighter) |
 | **Volatility Smile** | Economic realism test | Heston captures smile; BSM produces flat line |
 
-###  Critical Finding: The Volatility Smile
+###  The Volatility Smile
 
 The volatility smile visualization is **the most important chart** because it demonstrates:
 
