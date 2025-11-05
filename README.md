@@ -99,11 +99,9 @@ v0 (Initial variance):           0.0529 (σ₀ = 23.01%)
 
 ---
 
-### Volatility Smile: The Critical Difference
+### Volatility Smile:
 
 <img width="884" height="555" alt="image" src="https://github.com/user-attachments/assets/70c880bc-8193-48dc-afc6-46331f80ff6f" />
-
-
 
 Across all maturities (0.05y to 1.37y):
 - **Market** (blue dots): Clear downward-sloping smile pattern
